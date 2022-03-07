@@ -17,56 +17,68 @@ public class Questao02 {
     
     public static void main(String[] args) {
 
-        // Asking the array size to the user. 
+        // We'll receive inputs from the user as strings for Data verification (program could crash because of type mismatch).
         Scanner input = new Scanner(System.in);
-        int size = 0;
-        System.out.println("Informe o tamanho da lista: ");
-        size = input.nextInt();
-        System.out.println("=================================================================================");
+        String answer;
 
+        // Asking the array size to the user. 
+        do {
+            System.out.println("Informe o tamanho da lista: ");
+            answer = input.next();
+            if (!AuxFunctions.isInteger(answer) || Integer.parseInt(answer) < 0) System.out.println("Por favor informe um número inteiro positivo!"); 
+            AuxFunctions.printSymbol("=", 120); // System.out.print(string * quantity)
+        } while (!AuxFunctions.isInteger(answer) || Integer.parseInt(answer) < 0); // Can't assign negative value to array size.
+        int size = Integer.parseInt(answer);
+        
         // Constructing the array with values informed by the user.
         int nums[] = new int[size];
         for (int n = 0; n < nums.length; n++) {
-            System.out.printf("Informe o %dº valor [somente números inteiros]:%n", n+1);
-            nums[n] = input.nextInt();
+            do {
+                System.out.printf("Informe o %dº valor [somente números inteiros]:%n", n+1);
+                answer = input.next();
+                if (!AuxFunctions.isInteger(answer)) System.out.println("Por favor informe um número inteiro!"); 
+            } while (!AuxFunctions.isInteger(answer)); // This function verifies if the answer is a integer or not.
+            nums[n] = Integer.parseInt(answer); // Converting the answer to type int and assigning to array element.
         }
-        System.out.println("=================================================================================");
+        AuxFunctions.printSymbol("=", 120);  
 
         // Asking the user for the value which we'll check the difference between array elements.
-        System.out.println("Informe o valor inteiro o qual você gostaria de checar quantos elementos pares do vetor possuem a diferença: ");
-        int dif = input.nextInt();
+        do {
+            System.out.println("Informe o valor inteiro o qual você gostaria de checar quantos elementos pares do vetor possuem a diferença: ");
+            answer = input.next();
+            if (!AuxFunctions.isInteger(answer)) System.out.println("Por favor informe um número inteiro!"); 
+        } while (!AuxFunctions.isInteger(answer));
+        int dif = Integer.parseInt(answer);
 
-        // Creating a counter that will go up everytime a pair of elements fulfills the condition (the difference must be equal the value informed by the user).
+        input.close(); // Closing the Scanner, so that there isn't resource leaks.
+
+        // Everytime the condition is fulfilled (pair difference equal to value in "dif"), pairCount will go up and the pair will be stored in an ArrayList.
         int pairCount = 0;
-        // Also creating an empty string to store the pair values that fulfills the condition. We'll store these pairs in an ArrayList. 
         String newPair = "";
         ArrayList<String> pairList = new ArrayList<String>(); // We use ArrayList because normal array sizes are immutable in Java.
-        
-        // In the outside loop, we loop through every element of our array.
+
+        // Looping through the array twice. We compare the value of outside loop with every element in the array (inside loop).
         for (int i = 0; i < nums.length; i++) {
-            // In the inside loop, we loop through the array again, because we want to compare outside loop value with all the elements in the array. 
             for (int c = 0; c < nums.length; c++) {
                 if (i == c) continue; // If the element would compare with itself, the loop will be skipped with "continue".
-                // Comparing Outside and Inside loop values to see if the difference between them matches the value received in "dif" variable.
-                else if (nums[i] - nums[c] == dif) { 
-                    pairCount++;
-                    newPair = "[" + nums[i] + "," + nums[c] + "]";
+                else if (nums[i] - nums[c] == dif) { // Checking difference between elements in the array.  
+                    pairCount++;                     
+                    newPair = "[" + nums[i] + "," + nums[c] + "]"; // [x, y]
                     pairList.add(newPair);
                 }                
             }
         }
 
-        input.close(); // Closing our input, so that we don't have resource leaks.
-
         // Showing the results to the user.
-        System.out.println("=================================================================================");
+        AuxFunctions.printSymbol("=", 120); 
         System.out.printf("Lista: %s%n", Arrays.toString(nums));
         System.out.printf("Existem %d pares de elementos com a diferença de %d nesse vetor.%n", pairCount, dif);
-        System.out.print("Os pares são ");
+        if (pairCount > 0) System.out.print("Os pares são "); // We don't want to print this if there isn't any pair.
         for (int p = 0; p < pairList.size(); p++) { // Looping through our pairList and printing every pair stored inside.
             System.out.print(pairList.get(p) + " ");
         }
-        System.out.printf("%n=================================================================================");
+        System.out.println();
+        AuxFunctions.printSymbol("=", 120); 
 
     }
     
