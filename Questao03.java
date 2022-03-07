@@ -29,7 +29,6 @@ public class Questao03 {
         
         int stringSize = s.length();
         int gridSize = (int) Math.ceil(Math.sqrt(stringSize)); // Calculating the square root of string size, rouding it up and storing in gridSize variable.
-        System.out.println(gridSize);
         int index = 0;
         
         char grid[][] = new char[gridSize][gridSize];
@@ -38,14 +37,15 @@ public class Questao03 {
                 if (index < stringSize) {
                     grid[l][c] = s.charAt(index);
                     index++;
-                }
+                } else grid[l][c] = ' ';
             }
         }
 
-        for (int l = 0; l < gridSize; l++) {
-            for (int c = 0; c < gridSize; c++) {
-                System.out.print(grid[c][l]);
+        for (int c = 0; c < gridSize; c++) {
+            for (int l = 0; l < gridSize; l++) {
+                if (grid[l][c] != ' ') System.out.print(grid[l][c]);
             }
+            System.out.print(" "); // Adding an empty space after each column.
         }
 
         input.close(); // Closing our input, so that we don't have resource leaks.
